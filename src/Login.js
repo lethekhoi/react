@@ -1,16 +1,19 @@
 import { useRef, useState, useEffect, useContext } from 'react';
 import AuthContext from "./context/AuthProvider";
+import { useNavigate } from "react-router-dom";
+
 
 import axios from './api/axios';
-const LOGIN_URL = '/auth';
+const LOGIN_URL = '/signIn';
 
 const Login = () => {
     const { setAuth } = useContext(AuthContext);
     const userRef = useRef();
     const errRef = useRef();
+    const navigate = useNavigate();
 
-    const [user, setUser] = useState('');
-    const [pwd, setPwd] = useState('');
+    const [username, setUser] = useState('');
+    const [password, setPwd] = useState('');
     const [errMsg, setErrMsg] = useState('');
     const [success, setSuccess] = useState(false);
 
@@ -20,27 +23,37 @@ const Login = () => {
 
     useEffect(() => {
         setErrMsg('');
-    }, [user, pwd])
+    }, [username, password])
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         try {
             const response = await axios.post(LOGIN_URL,
-                JSON.stringify({ user, pwd }),
+                JSON.stringify({ username, password }),
                 {
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: {
+                        "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Requested-With",
+                    
+                        "Access-Control-Allow-Methods": "DELETE, POST, GET, OPTIONS",
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'Access-Control-Allow-Origin': 'http://localhost:3000',
+                        'Access-Control-Allow-Credentials': 'true',
+                        "mode": "no-cros"
+                    },
                     withCredentials: true
                 }
             );
             console.log(JSON.stringify(response?.data));
             //console.log(JSON.stringify(response));
-            const accessToken = response?.data?.accessToken;
-            const roles = response?.data?.roles;
-            setAuth({ user, pwd, roles, accessToken });
+            const accessToken = response?.data?.token;
+            const roles = response?.data?.role;
+            setAuth({ username, password, roles, accessToken });
             setUser('');
             setPwd('');
             setSuccess(true);
+            navigate("/dashboard");
         } catch (err) {
             if (!err?.response) {
                 setErrMsg('No Server Response');
@@ -77,7 +90,7 @@ const Login = () => {
                             ref={userRef}
                             autoComplete="off"
                             onChange={(e) => setUser(e.target.value)}
-                            value={user}
+                            value={username}
                             required
                         />
 
@@ -86,7 +99,7 @@ const Login = () => {
                             type="password"
                             id="password"
                             onChange={(e) => setPwd(e.target.value)}
-                            value={pwd}
+                            value={password}
                             required
                         />
                         <button>Sign In</button>

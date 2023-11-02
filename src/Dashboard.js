@@ -1,7 +1,7 @@
 const Dashboard = () => {
     return (
-      <div>
-        <p>Welcome to your Dashboard</p>
+      <div color="red">
+        <p color="red">Welcome to your Dashboard</p>
       </div>
     );
   };

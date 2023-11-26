@@ -3,10 +3,10 @@ import React from "react";
 const ReadOnlyRow = ({ contact, handleEditClick, handleDeleteClick }) => {
   return (
     <tr>
-      <td>{contact.id}</td>
-      <td>{contact.name}</td>
+      <td>{contact.courseName}</td>
       <td>{contact.trainingType}</td>
       <td>{contact.classType}</td>
+      <td>{contact.zoomLink?contact.zoomLink:contact.roomInfo}</td>
       <td>
         <button
           type="button"

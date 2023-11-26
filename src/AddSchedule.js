@@ -47,21 +47,21 @@ const AddSchedule = () => {
       <form onSubmit={handleAddFormSubmit}>
         <input
           type="text"
-          name="fullName"
+          name="coursrName"
           required="required"
           placeholder="Enter Course Name..."
           onChange={handleAddFormChange}
         />
         <input
-          type=""
-          name="address"
+          type="text"
+          name="trainingType"
           required="required"
           placeholder="Enter Training Type..."
           onChange={handleAddFormChange}
         />
         <input
           type="text"
-          name="phoneNumber"
+          name="classType"
           required="required"
           placeholder="Enter Class Type..."
           onChange={handleAddFormChange}

@@ -1,31 +1,26 @@
 import React, { useState, useEffect, Fragment } from "react";
-import { nanoid } from "nanoid";
+// import { nanoid } from "nanoid";
 import "./App.css";
-// import data from "./mock-data.json";
+import { useNavigate } from "react-router-dom";
 import ReadOnlyRow from "./components/ReadOnlyRow";
 import EditableRow from "./components/EditableRow";
 
 const App = () => {
   const url = "http://localhost:8080/schedules";
   const [contacts, setContacts] = useState([]);
-  const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ1c2VyMDEiLCJpYXQiOjE2OTcwOTU0NzcsImV4cCI6MTY5NzA5OTA3NywibXktYXR0cmlidXRlIjoibXktdmFsdWUifQ.lcItGmmipy9Lv-cPbQXtDaAQiM5kD4QZ46phDRe0AIw'
-  const fetchInfo = () => {
-    return fetch(url, { headers: { "Authorization": `Bearer ${token}` } })
-      .then((res) => res.json())
-      .then((d) => setContacts(d))
+  const token=  localStorage.getItem('jsonwebtoken')
+  console.log("token", token);
+  const navigate = useNavigate();
+  const fetchInfo = async () => {
+    const res = await fetch(url, { headers: { "Authorization": `Bearer ${token}` } });
+    const d = await res.json();
+    return setContacts(d);
   }
 
 
   useEffect(() => {
     fetchInfo();
   }, []);
-
-  const [addFormData, setAddFormData] = useState({
-    fullName: "",
-    address: "",
-    phoneNumber: "",
-    email: "",
-  });
 
   const [editFormData, setEditFormData] = useState({
     fullName: "",
@@ -36,17 +31,17 @@ const App = () => {
 
   const [editContactId, setEditContactId] = useState(null);
 
-  const handleAddFormChange = (event) => {
-    event.preventDefault();
+  // const handleAddFormChange = (event) => {
+  //   event.preventDefault();
 
-    const fieldName = event.target.getAttribute("name");
-    const fieldValue = event.target.value;
+  //   const fieldName = event.target.getAttribute("name");
+  //   const fieldValue = event.target.value;
 
-    const newFormData = { ...addFormData };
-    newFormData[fieldName] = fieldValue;
+  //   const newFormData = { ...addFormData };
+  //   newFormData[fieldName] = fieldValue;
 
-    setAddFormData(newFormData);
-  };
+  //   setAddFormData(newFormData);
+  // };
 
   const handleEditFormChange = (event) => {
     event.preventDefault();
@@ -62,17 +57,21 @@ const App = () => {
 
   const handleAddFormSubmit = (event) => {
     event.preventDefault();
+   
+    // const newContact = {
+    //   id: nanoid(),
+    //   fullName: addFormData.fullName,
+    //   address: addFormData.address,
+    //   phoneNumber: addFormData.phoneNumber,
+    //   email: addFormData.email,
+    // };
 
-    const newContact = {
-      id: nanoid(),
-      fullName: addFormData.fullName,
-      address: addFormData.address,
-      phoneNumber: addFormData.phoneNumber,
-      email: addFormData.email,
-    };
+    // const newContacts = [...contacts, newContact];
+    // setContacts(newContacts);
+    navigate("/addSchedule");
 
-    const newContacts = [...contacts, newContact];
-    setContacts(newContacts);
+
+    
   };
 
   const handleEditFormSubmit = (event) => {
@@ -130,10 +129,10 @@ const App = () => {
         <table>
           <thead>
             <tr>
-              <th>Name</th>
-              <th>Address</th>
-              <th>Phone Number</th>
-              <th>Email</th>
+              <th>Course Name</th>
+              <th>Training Type</th>
+              <th>Class Type</th>
+              <th>Class Info</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -186,37 +185,8 @@ const App = () => {
         </table>
       </form>
 
-      <h2>Add a Contact</h2>
-      <form onSubmit={handleAddFormSubmit}>
-        <input
-          type="text"
-          name="fullName"
-          required="required"
-          placeholder="Enter a name..."
-          onChange={handleAddFormChange}
-        />
-        <input
-          type="text"
-          name="address"
-          required="required"
-          placeholder="Enter an addres..."
-          onChange={handleAddFormChange}
-        />
-        <input
-          type="text"
-          name="phoneNumber"
-          required="required"
-          placeholder="Enter a phone number..."
-          onChange={handleAddFormChange}
-        />
-        <input
-          type="email"
-          name="email"
-          required="required"
-          placeholder="Enter an email..."
-          onChange={handleAddFormChange}
-        />
-        <button type="submit">Add</button>
+      <form onSubmit={handleAddFormSubmit}>       
+        <button type="submit">New Course</button>
       </form>
     </div>
   );

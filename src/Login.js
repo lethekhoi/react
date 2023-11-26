@@ -1,6 +1,7 @@
 import { useRef, useState, useEffect, useContext } from 'react';
 import AuthContext from "./context/AuthProvider";
 import { useNavigate } from "react-router-dom";
+import { setAuthenticationHeader } from './utils/authenticate';
 
 
 import axios from './api/axios';
@@ -34,7 +35,6 @@ const Login = () => {
                 {
                     headers: {
                         "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Requested-With",
-                    
                         "Access-Control-Allow-Methods": "DELETE, POST, GET, OPTIONS",
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',
@@ -45,15 +45,18 @@ const Login = () => {
                     withCredentials: true
                 }
             );
+
             console.log(JSON.stringify(response?.data));
             //console.log(JSON.stringify(response));
             const accessToken = response?.data?.token;
+            localStorage.setItem('jsonwebtoken', accessToken)
+            setAuthenticationHeader(accessToken) 
             const roles = response?.data?.role;
             setAuth({ username, password, roles, accessToken });
             setUser('');
             setPwd('');
             setSuccess(true);
-            navigate("/dashboard");
+            navigate("/list");
         } catch (err) {
             if (!err?.response) {
                 setErrMsg('No Server Response');

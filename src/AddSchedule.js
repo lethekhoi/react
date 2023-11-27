@@ -4,24 +4,7 @@ import "./App.css";
 import { useNavigate } from "react-router-dom";
 
 const AddSchedule = () => {
-  const options = [
-    {
-      label: "Apple",
-      value: "apple",
-    },
-    {
-      label: "Mango",
-      value: "mango",
-    },
-    {
-      label: "Banana",
-      value: "banana",
-    },
-    {
-      label: "Pineapple",
-      value: "pineapple",
-    },
-  ];
+
   const [schedules, setSchedules] = useState([]);
   const navigate = useNavigate();
   const [addFormData, setAddFormData] = useState({
@@ -44,6 +27,8 @@ const AddSchedule = () => {
     const newSchedules = [...schedules, newSchedule];
     setSchedules(newSchedules);
     console.log("newSchedules", newSchedules);
+    console.log("value ne ",trainingType)
+    console.log("value ne ",classType)
     navigate("/list");
   };
   const handleAddFormChange = (event) => {
@@ -57,7 +42,8 @@ const AddSchedule = () => {
 
     setAddFormData(newFormData);
   };
-
+  const [trainingType, setTrainingTypeValue] = useState('');
+  const [classType, setClassTypeValue] = useState('');
  
 
   return (
@@ -78,10 +64,11 @@ const AddSchedule = () => {
         <div>
           <div align="left" class="float-left">Traning Type</div>
           <div align="left" class="float-left">
-            <select >
-              {options.map((option) => (
-                <option value={option.value}>{option.label}</option>
-              ))}
+            <select onChange={event => setTrainingTypeValue(event.target.value)}
+                defaultValue={trainingType} >
+               <option value="Monthly">Monthly</option>
+               <option value="T&S">T&S</option>
+               <option value="Ad-hoc">Ad-hoc</option>
             </select>
           </div>
 
@@ -90,10 +77,11 @@ const AddSchedule = () => {
         <div>
           <div align="left" class="float-left">Class Type</div>
           <div align="left" class="float-left">
-            <select label="Class Type">
-              {options.map((option) => (
-                <option value={option.value}>{option.label}</option>
-              ))}
+            <select onChange={event => setClassTypeValue(event.target.value)}
+                defaultValue={classType} >
+               <option value="Zoom">Zoom</option>
+               <option value="Room">Room</option>
+             
             </select>
           </div>
 

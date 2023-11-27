@@ -39,3 +39,7 @@
   form * {
     font-size: 28px;
   }
+.float-left {
+    float:left;
+    width:300px; 
+}

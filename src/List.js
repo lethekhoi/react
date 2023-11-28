@@ -178,8 +178,6 @@ const App = () => {
               </Fragment>
 
 
-
-
             ))}
           </tbody>
         </table>

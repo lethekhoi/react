@@ -14,7 +14,7 @@ const AddSchedule = () => {
   const [classType, setClassTypeValue] = useState('Zoom');
 
   const [addFormData, setAddFormData] = useState({
-    coursrName: "",
+    courseName: "",
     classInfo: "",
     trainerName: "",
     startTime: "",
@@ -24,10 +24,7 @@ const AddSchedule = () => {
 
   const handleAddFormSubmit = async (event) => {
     event.preventDefault();
-
-   
-    
-
+    const token = localStorage.getItem('jsonwebtoken')
     try {
       const newDetail = {
         trainerName: addFormData.trainerName,
@@ -37,47 +34,47 @@ const AddSchedule = () => {
       const newDetails = [...details, newDetail];
       setDetails(newDetails)
       const response = await axios.post(LOGIN_URL,
-          JSON.stringify({ 
-            courseName:"1",
-            classInfo: "1",
-            trainingType: "Monthly",
-            classType: "Zoom",
-            listDetails:newDetails
+        JSON.stringify({
+          courseName: addFormData.courseName,
+          classInfo: addFormData.classInfo,
+          trainingType: "Monthly",
+          classType: "Zoom",
+          listDetails: newDetails
 
-           }),
-          {
-              headers: {
-                  "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Requested-With",
-                  "Access-Control-Allow-Methods": "DELETE, POST, GET, OPTIONS",
-                  'Content-Type': 'application/json',
-                  'Accept': 'application/json',
-                  'Access-Control-Allow-Origin': 'http://localhost:3000',
-                  'Access-Control-Allow-Credentials': 'true',
-                  "mode": "no-cros",
-                  'Authorization': 'Bearer ' + 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ1c2VyMDEiLCJpYXQiOjE3MDEwOTYyODMsImV4cCI6MTcwMTA5OTg4MywibXktYXR0cmlidXRlIjoibXktdmFsdWUifQ.sN7Hn7RYn_qStDs8Ha2Nyx3meCGiws4AGqJbHccr4-U',
-              },
-              withCredentials: true
-          }
+        }),
+        {
+          headers: {
+            "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Requested-With",
+            "Access-Control-Allow-Methods": "DELETE, POST, GET, OPTIONS",
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Access-Control-Allow-Origin': 'http://localhost:3000',
+            'Access-Control-Allow-Credentials': 'true',
+            "mode": "no-cros",
+            'Authorization': 'Bearer ' + token,
+          },
+          withCredentials: true
+        }
       );
 
       console.log(JSON.stringify(response?.data));
       //console.log(JSON.stringify(response));
       const accessToken = response?.data?.token;
-      
-    
+
+
       navigate("/list");
-  } catch (err) {
+    } catch (err) {
       if (!err?.response) {
-          setErrMsg('No Server Response');
+        setErrMsg('No Server Response');
       } else if (err.response?.status === 400) {
-          setErrMsg('Missing Username or Password');
+        setErrMsg('Missing Username or Password');
       } else if (err.response?.status === 401) {
-          setErrMsg('Unauthorized');
+        setErrMsg('Unauthorized');
       } else {
-          setErrMsg('Login Failed');
+        setErrMsg('Login Failed');
       }
       errRef.current.focus();
-  }
+    }
 
 
 
@@ -98,7 +95,7 @@ const AddSchedule = () => {
 
 
 
-  
+
   return (
     <div color="red">
       <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>

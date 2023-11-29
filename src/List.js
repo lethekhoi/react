@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Fragment } from "react";
-// import { nanoid } from "nanoid";
+import axios from './api/axios';
 import "./App.css";
 import { useNavigate } from "react-router-dom";
 import ReadOnlyRow from "./components/ReadOnlyRow";
@@ -7,16 +7,19 @@ import EditableRow from "./components/EditableRow";
 
 const App = () => {
   const url = "http://localhost:8080/schedules";
+  const urlDelete = "http://localhost:8080/admin/schedules";
   const [contacts, setContacts] = useState([]);
-  const token=  localStorage.getItem('jsonwebtoken')
+  const token = localStorage.getItem('jsonwebtoken')
   console.log("token", token);
   const navigate = useNavigate();
+
+
   const fetchInfo = async () => {
     const res = await fetch(url, { headers: { "Authorization": `Bearer ${token}` } });
+    console.log("res", res)
     const d = await res.json();
     return setContacts(d);
-  }
-
+  };
 
   useEffect(() => {
     fetchInfo();
@@ -57,21 +60,7 @@ const App = () => {
 
   const handleAddFormSubmit = (event) => {
     event.preventDefault();
-   
-    // const newContact = {
-    //   id: nanoid(),
-    //   fullName: addFormData.fullName,
-    //   address: addFormData.address,
-    //   phoneNumber: addFormData.phoneNumber,
-    //   email: addFormData.email,
-    // };
-
-    // const newContacts = [...contacts, newContact];
-    // setContacts(newContacts);
     navigate("/addSchedule");
-
-
-    
   };
 
   const handleEditFormSubmit = (event) => {
@@ -113,14 +102,18 @@ const App = () => {
     setEditContactId(null);
   };
 
-  const handleDeleteClick = (contactId) => {
-    const newContacts = [...contacts];
-
-    const index = contacts.findIndex((contact) => contact.id === contactId);
-
-    newContacts.splice(index, 1);
-
-    setContacts(newContacts);
+  const handleDeleteClick = async (scheduleId) => {
+    console.log("token delete:", token);
+    const headers = {
+      'Authorization': 'Bearer ' + token
+    }
+    const data = {
+    
+    }
+    
+    const response = await axios.delete(urlDelete+`/${scheduleId}`,{headers, data} );
+    console.log("token delete:", response);
+    fetchInfo()
   };
 
   return (
@@ -154,25 +147,25 @@ const App = () => {
                 )}
 
                 <tr>
-                <td>
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>Trainer Name</th>
-                        <th>From</th>
-                        <th>To</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {contact.listDetails.map((detail) => (
-                        <tr key={detail.id}>
-                          <td>{detail.trainerName}</td>
-                          <td>{detail.startTime}</td>
-                          <td>{detail.endTime}</td>
+                  <td>
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Trainer Name</th>
+                          <th>From</th>
+                          <th>To</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                      </thead>
+                      <tbody>
+                        {contact.listDetails.map((detail) => (
+                          <tr key={detail.id}>
+                            <td>{detail.trainerName}</td>
+                            <td>{detail.startTime}</td>
+                            <td>{detail.endTime}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
                   </td>
                 </tr>
               </Fragment>
@@ -183,7 +176,7 @@ const App = () => {
         </table>
       </form>
 
-      <form onSubmit={handleAddFormSubmit}>       
+      <form onSubmit={handleAddFormSubmit}>
         <button type="submit">New Course</button>
       </form>
     </div>

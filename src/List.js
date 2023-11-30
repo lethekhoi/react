@@ -3,7 +3,7 @@ import axios from './api/axios';
 import "./App.css";
 import { useNavigate } from "react-router-dom";
 import ReadOnlyRow from "./components/ReadOnlyRow";
-import EditableRow from "./components/EditableRow";
+// import EditableRow from "./components/EditableRow";
 
 const App = () => {
   const url = "http://localhost:8080/schedules";
@@ -46,17 +46,17 @@ const App = () => {
   //   setAddFormData(newFormData);
   // };
 
-  const handleEditFormChange = (event) => {
-    event.preventDefault();
+  // const handleEditFormChange = (event) => {
+  //   event.preventDefault();
 
-    const fieldName = event.target.getAttribute("name");
-    const fieldValue = event.target.value;
+  //   const fieldName = event.target.getAttribute("name");
+  //   const fieldValue = event.target.value;
 
-    const newFormData = { ...editFormData };
-    newFormData[fieldName] = fieldValue;
+  //   const newFormData = { ...editFormData };
+  //   newFormData[fieldName] = fieldValue;
 
-    setEditFormData(newFormData);
-  };
+  //   setEditFormData(newFormData);
+  // };
 
   const handleAddFormSubmit = (event) => {
     event.preventDefault();
@@ -84,23 +84,17 @@ const App = () => {
     setEditContactId(null);
   };
 
-  const handleEditClick = (event, contact) => {
+  const handleEditClick = (event, schedule) => {
     event.preventDefault();
-    setEditContactId(contact.id);
+    setEditContactId(schedule.id);
+    console.log("Edit", schedule.id)
+    navigate("/editSchedule", { state: { id: schedule.id } });
 
-    const formValues = {
-      fullName: contact.fullName,
-      address: contact.address,
-      phoneNumber: contact.phoneNumber,
-      email: contact.email,
-    };
-
-    setEditFormData(formValues);
   };
 
-  const handleCancelClick = () => {
-    setEditContactId(null);
-  };
+  // const handleCancelClick = () => {
+  //   setEditContactId(null);
+  // };
 
   const handleDeleteClick = async (scheduleId) => {
     console.log("token delete:", token);
@@ -108,10 +102,10 @@ const App = () => {
       'Authorization': 'Bearer ' + token
     }
     const data = {
-    
+
     }
-    
-    const response = await axios.delete(urlDelete+`/${scheduleId}`,{headers, data} );
+
+    const response = await axios.delete(urlDelete + `/${scheduleId}`, { headers, data });
     console.log("token delete:", response);
     fetchInfo()
   };
@@ -132,19 +126,13 @@ const App = () => {
           <tbody>
             {contacts.map((contact, id) => (
               <Fragment key={id}>
-                {editContactId === contact.id ? (
-                  <EditableRow
-                    editFormData={editFormData}
-                    handleEditFormChange={handleEditFormChange}
-                    handleCancelClick={handleCancelClick}
-                  />
-                ) : (
+                {
                   <ReadOnlyRow
                     contact={contact}
                     handleEditClick={handleEditClick}
                     handleDeleteClick={handleDeleteClick}
                   />
-                )}
+                }
 
                 <tr>
                   <td>

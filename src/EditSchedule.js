@@ -2,17 +2,57 @@ import React, { useRef, useState, useEffect } from "react";
 import axios from './api/axios';
 import "./App.css";
 import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+const LOGIN_URL = 'http://localhost:8080/schedules';
+const url = 'http://localhost:8080/user/schedules';
+const EditSchedule = () => {
+  const [contact, setContact] = useState();
+  const location = useLocation();
+  var id = location.state.id
+  console.log("edit id", id)
+  const token = localStorage.getItem('jsonwebtoken')
+  console.log("token", token);
 
-const LOGIN_URL = '/admin/schedules';
-const AddSchedule = () => {
   const errRef = useRef();
   const userRef = useRef();
   const [errMsg, setErrMsg] = useState('');
   const [details, setDetails] = useState([]);
   const navigate = useNavigate();
-  const [trainingType, setTrainingTypeValue] = useState('Monthly');
-  const [classType, setClassTypeValue] = useState('Zoom');
 
+
+
+  useEffect(() => {
+    fetchInfo();
+
+  }, []);
+
+  function fetchInfo() {
+    axios
+      .get(url + `/${id}`, {
+        headers: {
+          "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Requested-With",
+          "Access-Control-Allow-Methods": "DELETE, POST, GET, OPTIONS",
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Access-Control-Allow-Origin': 'http://localhost:3000',
+          'Access-Control-Allow-Credentials': 'true',
+          "mode": "no-cros",
+          'Authorization': 'Bearer ' + token,
+        },
+        withCredentials: true
+      })
+      .then((res) => {
+        console.log(res);
+        setContact(res.data);
+        setClassTypeValue(res.data.classType)
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  const [trainingType, setTrainingTypeValue] = useState('');
+  const [classType, setClassTypeValue] = useState('');
   const [addFormData, setAddFormData] = useState({
     courseName: "",
     classInfo: "",
@@ -22,7 +62,7 @@ const AddSchedule = () => {
   });
 
 
-  const handleAddFormSubmit = async (event) => {
+  const handleEditFormSubmit = async (event) => {
     event.preventDefault();
     const token = localStorage.getItem('jsonwebtoken')
     try {
@@ -37,8 +77,8 @@ const AddSchedule = () => {
         JSON.stringify({
           courseName: addFormData.courseName,
           classInfo: addFormData.classInfo,
-          trainingType: trainingType,
-          classType: classType,
+          trainingType: "Monthly",
+          classType: "Zoom",
           listDetails: newDetails
 
         }),
@@ -99,11 +139,12 @@ const AddSchedule = () => {
   return (
     <div color="red">
       <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
-      <h2 align="center" >Add a new Course</h2>
-      <form onSubmit={handleAddFormSubmit}>
+      <h2 align="center" >Edit Course Schedule</h2>
+      <form onSubmit={handleEditFormSubmit}>
         <div>
           <div align="left" className="float-left">Course Name</div>
           <input
+          defaultValue={contact.courseName}
             type="text"
             name="courseName"
             required="required"
@@ -116,7 +157,7 @@ const AddSchedule = () => {
           <div align="left" className="float-left">Traning Type</div>
           <div align="left" className="float-left">
             <select onChange={event => setTrainingTypeValue(event.target.value)}
-              defaultValue={trainingType} >
+              defaultValue={trainingType}>
               <option value="Monthly">Monthly</option>
               <option value="T&S">T&S</option>
               <option value="Ad-hoc">Ad-hoc</option>
@@ -129,7 +170,7 @@ const AddSchedule = () => {
           <div align="left" className="float-left">Class Type</div>
           <div align="left" className="float-left">
             <select onChange={event => setClassTypeValue(event.target.value)}
-              defaultValue={classType} >
+               defaultValue={classType}>
               <option value="Zoom">Zoom</option>
               <option value="Room">Room</option>
 
@@ -141,6 +182,7 @@ const AddSchedule = () => {
         <div>
           <div align="left" className="float-left">Class Info </div>
           <input
+            defaultValue={contact.classInfo}
             type="text"
             name="classInfo"
             required="required"
@@ -151,6 +193,7 @@ const AddSchedule = () => {
         <div>
           <div align="left" className="float-left">Trainer Name</div>
           <input
+    
             type="text"
             name="trainerName"
             required="required"
@@ -180,11 +223,11 @@ const AddSchedule = () => {
         </div>
 
 
-        <button type="submit">Add</button>
+        <button type="submit">Edit</button>
       </form>
 
 
     </div>
   );
 };
-export default AddSchedule;
+export default EditSchedule;

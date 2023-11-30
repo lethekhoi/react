@@ -5,6 +5,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Dashboard from './Dashboard';
 import AddSchedule from './AddSchedule';
 import { ToastContainer } from 'react-toastify';
+import EditSchedule from './EditSchedule';
 function App() {
 
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path='/login' element={<Login />}></Route>
           <Route path='/list' element={<List />}></Route>
           <Route path='/addSchedule' element={<AddSchedule />}></Route>
+          <Route path='/editSchedule' element={<EditSchedule />}></Route>
           {/* <Route path='/register' element={<Register/>}></Route>
         <Route path='/customer' element={<Customer/>}></Route> */}
         </Routes>

@@ -6,7 +6,7 @@ const ReadOnlyRow = ({ contact, handleEditClick, handleDeleteClick }) => {
       <td>{contact.courseName}</td>
       <td>{contact.trainingType}</td>
       <td>{contact.classType}</td>
-      <td>{contact.zoomLink?contact.zoomLink:contact.roomInfo}</td>
+      <td>{contact.classInfo}</td>
       <td>
         <button
           type="button"

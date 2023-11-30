@@ -57,10 +57,6 @@ const AddSchedule = () => {
         }
       );
 
-      console.log(JSON.stringify(response?.data));
-      //console.log(JSON.stringify(response));
-      const accessToken = response?.data?.token;
-
 
       navigate("/list");
     } catch (err) {

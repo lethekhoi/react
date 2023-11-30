@@ -88,7 +88,8 @@ const App = () => {
     event.preventDefault();
     setEditContactId(schedule.id);
     console.log("Edit", schedule.id)
-    navigate("/editSchedule", { state: { id: schedule.id } });
+    console.log("training Type", schedule.trainingType)
+    navigate("/editSchedule", { state: { id: schedule.id, trainingType:schedule.trainingType, classType:schedule.classType } });
 
   };
 

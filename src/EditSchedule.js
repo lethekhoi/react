@@ -3,10 +3,11 @@ import axios from './api/axios';
 import "./App.css";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
+import moment from "moment/moment";
 const LOGIN_URL = 'http://localhost:8080/schedules';
 const url = 'http://localhost:8080/user/schedules';
 const EditSchedule = () => {
-  const [contact, setContact] = useState();
+  const [contact, setContact] = useState('');
   const location = useLocation();
   var id = location.state.id
   console.log("edit id", id)
@@ -26,8 +27,8 @@ const EditSchedule = () => {
 
   }, []);
 
-  function fetchInfo() {
-    axios
+  async function fetchInfo() {
+    await axios
       .get(url + `/${id}`, {
         headers: {
           "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Requested-With",
@@ -44,15 +45,16 @@ const EditSchedule = () => {
       .then((res) => {
         console.log(res);
         setContact(res.data);
-        setClassTypeValue(res.data.classType)
+        setDetails(res.data.listDetails[0])
+        console.log("startTime",)
       })
       .catch((err) => {
         console.log(err);
       });
   }
 
-  const [trainingType, setTrainingTypeValue] = useState('');
-  const [classType, setClassTypeValue] = useState('');
+  const [trainingType, setTrainingTypeValue] = useState(location.state.trainingType);
+  const [classType, setClassTypeValue] = useState(location.state.classType);
   const [addFormData, setAddFormData] = useState({
     courseName: "",
     classInfo: "",
@@ -97,9 +99,7 @@ const EditSchedule = () => {
         }
       );
 
-      console.log(JSON.stringify(response?.data));
-      //console.log(JSON.stringify(response));
-      const accessToken = response?.data?.token;
+  
 
 
       navigate("/list");
@@ -132,7 +132,9 @@ const EditSchedule = () => {
 
     setAddFormData(newFormData);
   };
-
+  const handleCancel = () => {
+    navigate("/list");
+  }
 
 
 
@@ -144,7 +146,7 @@ const EditSchedule = () => {
         <div>
           <div align="left" className="float-left">Course Name</div>
           <input
-          defaultValue={contact.courseName}
+            defaultValue={contact.courseName}
             type="text"
             name="courseName"
             required="required"
@@ -170,7 +172,7 @@ const EditSchedule = () => {
           <div align="left" className="float-left">Class Type</div>
           <div align="left" className="float-left">
             <select onChange={event => setClassTypeValue(event.target.value)}
-               defaultValue={classType}>
+              defaultValue={classType}>
               <option value="Zoom">Zoom</option>
               <option value="Room">Room</option>
 
@@ -193,7 +195,7 @@ const EditSchedule = () => {
         <div>
           <div align="left" className="float-left">Trainer Name</div>
           <input
-    
+            defaultValue={details.trainerName}
             type="text"
             name="trainerName"
             required="required"
@@ -204,6 +206,7 @@ const EditSchedule = () => {
         <div>
           <div align="left" className="float-left">Start Time </div>
           <input
+            defaultValue={moment(details.startTime).format("YYYY-MM-DDTkk:mm")}
             type="datetime-local"
             name="startTime"
             required="required"
@@ -214,6 +217,7 @@ const EditSchedule = () => {
         <div>
           <div align="left" className="float-left">End Time </div>
           <input
+            defaultValue={moment(details.endTime).format("YYYY-MM-DDTkk:mm")}
             type="datetime-local"
             name="endTime"
             required="required"
@@ -224,6 +228,8 @@ const EditSchedule = () => {
 
 
         <button type="submit">Edit</button>
+
+        <button onClick={handleCancel}>Cancel</button>
       </form>
 
 

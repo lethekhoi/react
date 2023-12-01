@@ -4,10 +4,10 @@ import "./App.css";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import moment from "moment/moment";
-const LOGIN_URL = 'http://localhost:8080/schedules';
+const update_url = 'http://localhost:8080/admin/schedules';
 const url = 'http://localhost:8080/user/schedules';
 const EditSchedule = () => {
-  const [contact, setContact] = useState('');
+  const [schedule, setSchedule] = useState('');
   const location = useLocation();
   var id = location.state.id
   console.log("edit id", id)
@@ -18,6 +18,7 @@ const EditSchedule = () => {
   const userRef = useRef();
   const [errMsg, setErrMsg] = useState('');
   const [details, setDetails] = useState([]);
+  const [newD, ] = useState([]);
   const navigate = useNavigate();
 
 
@@ -44,7 +45,7 @@ const EditSchedule = () => {
       })
       .then((res) => {
         console.log(res);
-        setContact(res.data);
+        setSchedule(res.data);
         setDetails(res.data.listDetails[0])
         console.log("startTime",)
       })
@@ -69,19 +70,20 @@ const EditSchedule = () => {
     const token = localStorage.getItem('jsonwebtoken')
     try {
       const newDetail = {
-        trainerName: addFormData.trainerName,
-        startTime: addFormData.startTime,
-        endTime: addFormData.endTime,
+        id : details.id,
+        trainerName: addFormData.trainerName===""?details.trainerName:addFormData.trainerName,
+        startTime: addFormData.startTime===""?details.startTime:addFormData.startTime,
+        endTime: addFormData.endTime===""?details.endTime:addFormData.endTime,
       }
-      const newDetails = [...details, newDetail];
+      const newDetails = [...newD, newDetail];
       setDetails(newDetails)
-      const response = await axios.post(LOGIN_URL,
+      const response = await axios.patch(update_url+`/${id}` ,
         JSON.stringify({
-          courseName: addFormData.courseName,
-          classInfo: addFormData.classInfo,
-          trainingType: "Monthly",
-          classType: "Zoom",
-          listDetails: newDetails
+          courseName: addFormData.courseName===""?schedule.courseName:addFormData.courseName,
+          classInfo: addFormData.classInfo===""?schedule.classInfo:addFormData.classInfo,
+          trainingType: trainingType,
+          classType: classType,
+        
 
         }),
         {
@@ -98,12 +100,11 @@ const EditSchedule = () => {
           withCredentials: true
         }
       );
-
-  
-
+    console.log(response)
 
       navigate("/list");
     } catch (err) {
+      console.log("error",err)
       if (!err?.response) {
         setErrMsg('No Server Response');
       } else if (err.response?.status === 400) {
@@ -146,7 +147,7 @@ const EditSchedule = () => {
         <div>
           <div align="left" className="float-left">Course Name</div>
           <input
-            defaultValue={contact.courseName}
+            defaultValue={schedule.courseName}
             type="text"
             name="courseName"
             required="required"
@@ -184,7 +185,7 @@ const EditSchedule = () => {
         <div>
           <div align="left" className="float-left">Class Info </div>
           <input
-            defaultValue={contact.classInfo}
+            defaultValue={schedule.classInfo}
             type="text"
             name="classInfo"
             required="required"
@@ -227,7 +228,7 @@ const EditSchedule = () => {
         </div>
 
 
-        <button type="submit">Edit</button>
+        <button type="submit">Update</button>
 
         <button onClick={handleCancel}>Cancel</button>
       </form>

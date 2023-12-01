@@ -88,6 +88,9 @@ const AddSchedule = () => {
 
     setAddFormData(newFormData);
   };
+  const handleCancel = () => {
+    navigate("/list");
+  }
 
 
 
@@ -177,6 +180,7 @@ const AddSchedule = () => {
 
 
         <button type="submit">Add</button>
+        <button onClick={handleCancel}>Cancel</button>
       </form>
 
 

@@ -43,3 +43,13 @@
     float:left;
     width:300px; 
 }
+.float-right {
+  float:right;
+  width:300px; 
+}
+.app-header {
+  background-color: #ffffff;
+  display: flex-end;
+  float: right;
+  color: rgb(0, 0, 0);
+}

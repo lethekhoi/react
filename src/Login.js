@@ -17,7 +17,8 @@ const Login = () => {
     const [password, setPwd] = useState('');
     const [errMsg, setErrMsg] = useState('');
     const [success, setSuccess] = useState(false);
-
+    const token = localStorage.getItem('jsonwebtoken')
+    console.log("token",token)
     useEffect(() => {
         userRef.current.focus();
     }, [])
@@ -72,13 +73,14 @@ const Login = () => {
     }
 
     return (
+        <div className='App'>
         <>
             {success ? (
                 <section>
                     <h1>You are logged in!</h1>
                     <br />
                     <p>
-                        <a href="#">Go to Home</a>
+                        <a href="/list">Go to Home</a>
                     </p>
                 </section>
             ) : (
@@ -117,6 +119,7 @@ const Login = () => {
                 </section>
             )}
         </>
+        </div>
     )
 }
 

@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import axios from './api/axios';
 import "./App.css";
 import { useNavigate } from "react-router-dom";
+import Header1 from "./Header1";
 
 const LOGIN_URL = '/admin/schedules';
 const AddSchedule = () => {
@@ -11,7 +12,7 @@ const AddSchedule = () => {
   const [details, setDetails] = useState([]);
   const navigate = useNavigate();
   const [trainingType, setTrainingTypeValue] = useState('Monthly');
-  const [classType, setClassTypeValue] = useState('Zoom');
+  const [classType, setClassTypeValue] = useState('Room');
 
   const [addFormData, setAddFormData] = useState({
     courseName: "",
@@ -96,6 +97,9 @@ const AddSchedule = () => {
 
 
   return (
+<div>
+<Header1/>
+  <div className="App">
     <div color="red">
       <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
       <h2 align="center" >Add a new Course</h2>
@@ -185,6 +189,8 @@ const AddSchedule = () => {
 
 
     </div>
+    </div>
+</div>
   );
 };
 export default AddSchedule;

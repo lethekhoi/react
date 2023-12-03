@@ -3,7 +3,9 @@ import axios from './api/axios';
 import "./App.css";
 import { useNavigate } from "react-router-dom";
 import ReadOnlyRow from "./components/ReadOnlyRow";
+import Header1 from "./Header1";
 // import EditableRow from "./components/EditableRow";
+
 
 const App = () => {
   const url = "http://localhost:8080/schedules";
@@ -87,9 +89,14 @@ const App = () => {
   const handleEditClick = (event, schedule) => {
     event.preventDefault();
     setEditContactId(schedule.id);
-    console.log("Edit", schedule.id)
-    console.log("training Type", schedule.trainingType)
-    navigate("/editSchedule", { state: { id: schedule.id, trainingType:schedule.trainingType, classType:schedule.classType } });
+    navigate("/editSchedule", {
+       state: { 
+        id: schedule.id, 
+        trainingType: schedule.trainingType, 
+        classType: schedule.classType ,
+        details:schedule.listDetails[0]
+        
+      } });
 
   };
 
@@ -112,62 +119,67 @@ const App = () => {
   };
 
   return (
-    <div className="app-container">
-      <form onSubmit={handleEditFormSubmit}>
-        <table>
-          <thead>
-            <tr>
-              <th>Course Name</th>
-              <th>Training Type</th>
-              <th>Class Type</th>
-              <th>Class Info</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {contacts.map((contact, id) => (
-              <Fragment key={id}>
-                {
-                  <ReadOnlyRow
-                    contact={contact}
-                    handleEditClick={handleEditClick}
-                    handleDeleteClick={handleDeleteClick}
-                  />
-                }
 
-                <tr>
-                  <td>
-                    <table>
-                      <thead>
-                        <tr>
-                          <th>Trainer Name</th>
-                          <th>From</th>
-                          <th>To</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {contact.listDetails.map((detail) => (
-                          <tr key={detail.id}>
-                            <td>{detail.trainerName}</td>
-                            <td>{detail.startTime}</td>
-                            <td>{detail.endTime}</td>
+    <div>
+      <Header1/>
+      <div className="App">
+      <h1 >Course Management System</h1>
+        <form onSubmit={handleEditFormSubmit}>
+          <table>
+            <thead>
+              <tr>
+                <th>Course Name</th>
+                <th>Training Type</th>
+                <th>Class Type</th>
+                <th>Class Info</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {contacts.map((contact, id) => (
+                <Fragment key={id}>
+                  {
+                    <ReadOnlyRow
+                      contact={contact}
+                      handleEditClick={handleEditClick}
+                      handleDeleteClick={handleDeleteClick}
+                    />
+                  }
+
+                  <tr>
+                    <td>
+                      <table>
+                        <thead>
+                          <tr>
+                            <th>Trainer Name</th>
+                            <th>From</th>
+                            <th>To</th>
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </td>
-                </tr>
-              </Fragment>
+                        </thead>
+                        <tbody>
+                          {contact.listDetails.map((detail) => (
+                            <tr key={detail.id}>
+                              <td>{detail.trainerName}</td>
+                              <td>{detail.startTime}</td>
+                              <td>{detail.endTime}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                </Fragment>
 
 
-            ))}
-          </tbody>
-        </table>
-      </form>
+              ))}
+            </tbody>
+          </table>
+        </form>
 
-      <form onSubmit={handleAddFormSubmit}>
-        <button type="submit">New Course</button>
-      </form>
+        <form onSubmit={handleAddFormSubmit}>
+          <button type="submit">New Course</button>
+        </form>
+      </div>
     </div>
   );
 };

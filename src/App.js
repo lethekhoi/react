@@ -6,12 +6,13 @@ import Dashboard from './Dashboard';
 import AddSchedule from './AddSchedule';
 import { ToastContainer } from 'react-toastify';
 import EditSchedule from './EditSchedule';
+import Header1 from './Header1'
 function App() {
 
   return (
-    <div className="App">
+    
+      <div>
       <BrowserRouter>
-      <h1>Course Management System</h1>
         <ToastContainer theme='colored' position='top-center'></ToastContainer>
         <Routes>
           <Route path='/' element={<Login />}></Route>
@@ -25,7 +26,8 @@ function App() {
         </Routes>
 
       </BrowserRouter>
-    </div>
+      </div>
+
   );
 }
 

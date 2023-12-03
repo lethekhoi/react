@@ -27,39 +27,11 @@ const App = () => {
     fetchInfo();
   }, []);
 
-  const [editFormData, setEditFormData] = useState({
-    fullName: "",
-    address: "",
-    phoneNumber: "",
-    email: "",
-  });
-
-  const [editContactId, setEditContactId] = useState(null);
+  const [, setEditContactId] = useState(null);
 
   const handleAddFormSubmit = (event) => {
     event.preventDefault();
     navigate("/addSchedule");
-  };
-
-  const handleEditFormSubmit = (event) => {
-    event.preventDefault();
-
-    const editedContact = {
-      id: editContactId,
-      fullName: editFormData.fullName,
-      address: editFormData.address,
-      phoneNumber: editFormData.phoneNumber,
-      email: editFormData.email,
-    };
-
-    const newContacts = [...contacts];
-
-    const index = contacts.findIndex((contact) => contact.id === editContactId);
-
-    newContacts[index] = editedContact;
-
-    setContacts(newContacts);
-    setEditContactId(null);
   };
 
   const handleEditClick = (event, schedule) => {
@@ -75,10 +47,6 @@ const App = () => {
       } });
 
   };
-
-  // const handleCancelClick = () => {
-  //   setEditContactId(null);
-  // };
 
   const handleDeleteClick = async (scheduleId) => {
     console.log("token delete:", token);
@@ -99,8 +67,8 @@ const App = () => {
     <div>
       <Header1/>
       <div className="App">
-      <h1 >Course Management System</h1>
-        <form onSubmit={handleEditFormSubmit}>
+      <h1>Course Management System</h1>
+       <br/>
           <table>
             <thead>
               <tr>
@@ -131,7 +99,7 @@ const App = () => {
               ))}
             </tbody>
           </table>
-        </form>
+     
 
         <form onSubmit={handleAddFormSubmit}>
           <button type="submit">New Course</button>

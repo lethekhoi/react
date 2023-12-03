@@ -8,6 +8,7 @@
   table {
     border-collapse: collapse;
     width: 100%;
+
   }
   
   th,
@@ -15,14 +16,18 @@
     border: 1px solid #9f3d3d;
     text-align: left;
     padding: 8px;
+    padding-left:15px;
+    padding-right:15px ;
     font-size: 32px;
   }
   
   th {
+    text-align: center;
     background-color: rgb(117, 201, 250);
   }
   
   td {
+    text-align: center;
     background-color: rgb(205, 235, 253);
   }
   

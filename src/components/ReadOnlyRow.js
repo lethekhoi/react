@@ -1,20 +1,23 @@
 import React from "react";
-
-const ReadOnlyRow = ({ contact, handleEditClick, handleDeleteClick }) => {
+import moment from "moment/moment";
+const ReadOnlyRow = ({ contact: course, handleEditClick, handleDeleteClick }) => {
   return (
     <tr>
-      <td>{contact.courseName}</td>
-      <td>{contact.trainingType}</td>
-      <td>{contact.classType}</td>
-      <td>{contact.classInfo}</td>
+      <td>{course.courseName}</td>
+      <td>{course.trainingType}</td>
+      <td>{course.classType}</td>
+      <td>{course.classInfo}</td>
+      <td>{course.listDetails[0].trainerName}</td>
+      <td>{moment(course.listDetails[0].startTime).format("YYYY-MM-DDThh:mm")}</td>
+      <td>{moment(course.listDetails[0].endTime).format("YYYY-MM-DDThh:mm")}</td>
       <td>
         <button
           type="button"
-          onClick={(event) => handleEditClick(event, contact)}
+          onClick={(event) => handleEditClick(event, course)}
         >
           Edit
         </button>
-        <button type="button" onClick={() => handleDeleteClick(contact.id)}>
+        <button type="button" onClick={() => handleDeleteClick(course.id)}>
           Delete
         </button>
       </td>

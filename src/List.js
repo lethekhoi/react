@@ -36,30 +36,6 @@ const App = () => {
 
   const [editContactId, setEditContactId] = useState(null);
 
-  // const handleAddFormChange = (event) => {
-  //   event.preventDefault();
-
-  //   const fieldName = event.target.getAttribute("name");
-  //   const fieldValue = event.target.value;
-
-  //   const newFormData = { ...addFormData };
-  //   newFormData[fieldName] = fieldValue;
-
-  //   setAddFormData(newFormData);
-  // };
-
-  // const handleEditFormChange = (event) => {
-  //   event.preventDefault();
-
-  //   const fieldName = event.target.getAttribute("name");
-  //   const fieldValue = event.target.value;
-
-  //   const newFormData = { ...editFormData };
-  //   newFormData[fieldName] = fieldValue;
-
-  //   setEditFormData(newFormData);
-  // };
-
   const handleAddFormSubmit = (event) => {
     event.preventDefault();
     navigate("/addSchedule");
@@ -132,6 +108,9 @@ const App = () => {
                 <th>Training Type</th>
                 <th>Class Type</th>
                 <th>Class Info</th>
+                <th>Trainer Name</th>
+                <th>Start Time</th>
+                <th>End Time</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -146,28 +125,6 @@ const App = () => {
                     />
                   }
 
-                  <tr>
-                    <td>
-                      <table>
-                        <thead>
-                          <tr>
-                            <th>Trainer Name</th>
-                            <th>From</th>
-                            <th>To</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {contact.listDetails.map((detail) => (
-                            <tr key={detail.id}>
-                              <td>{detail.trainerName}</td>
-                              <td>{detail.startTime}</td>
-                              <td>{detail.endTime}</td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </td>
-                  </tr>
                 </Fragment>
 
 

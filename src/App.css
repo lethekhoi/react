@@ -46,15 +46,31 @@
   }
 .float-left {
     float:left;
+    font-size: 30px;
     width:300px; 
 }
 .float-right {
   float:right;
-  width:300px; 
+  text-align: end;
+}
+.float-center{
+  padding: 10px;
+  text-align:center;
 }
 .app-header {
   background-color: #ffffff;
   display: flex-end;
   float: right;
   color: rgb(0, 0, 0);
+}
+.search {
+  float: right;
+  flex-direction: row;
+  gap: 10px;
+  padding: 20px;
+ 
+}
+.search-item {
+  height: 50px;
+  font-size: 20px;
 }
